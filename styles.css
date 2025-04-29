@@ -1,0 +1,29 @@
+body {
+      font-family: Arial, sans-serif;
+      background-color: #2c2f33;
+      color: #eeeeee;
+      padding: 20px;
+    }
+h1 {
+    color: #7289da;
+   }
+h2 {
+    color: #99aab5;
+    }
+ul, ol {
+    margin-left: 20px;
+    }
+img {
+    width: 200px;
+    height: 200px;
+    margin-right: 10px;
+        }
+.moods {
+    display: flex;
+    gap: 20px;
+}
+
+footer {
+    position:fixed;
+    bottom: 0;
+}
