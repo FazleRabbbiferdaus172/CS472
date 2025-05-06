@@ -1,45 +1,34 @@
 "use strict"
 
-class Student {
-    constructor(studentId, answers =[ ]) {
-        this.studentId = studentId
-        this.answers = answers
-    }
-
-    addAnswer(question) {
-        this.answers.push(question)
-    }
+function Student(studentId, answers = []) {
+    this.studentId = studentId
+    this.answers = answers
 }
 
-class Question {
-    constructor(qid, answer) {
-        this.qid = qid
-        this.answer = answer
-    }
+Student.prototype.addAnswer = function (question) {this.answers.push(question)}
 
-    checkAnswer(answer) {
-        return this.answer === answer
-    }
+function Question(qid, answer) {
+    this.qid = qid
+    this.answer = answer
 }
 
-class Quiz {
-    constructor(questions=[], students=[]) {
-        this.questions = new Map(questions.map(a => [a.qid, a.answer]))
-        this.students = students
-    }
+Question.prototype.checkAnswer = function (answer) {return this.answer === answer}
 
-    scoreStudentBySid (sid) {
-        let self = this
-        return this.students.find(x => x.studentId == sid).answers.map(a => {
-            return a.checkAnswer(self.questions.get(a.qid)) ? 1 : 0 
-        }).reduce((x,y) => x + y, 0)
-    }
+function Quiz(questions=[], students=[]) {
+    this.questions = new Map(questions.map(a => [a.qid, a.answer]))
+    this.students = students
+}
 
-    getAverageScore() {
-        let self = this
-        return this.students.map(s => this.scoreStudentBySid(s.studentId)).reduce((x,y) => x+y) / this.students.length
-    }
+Quiz.prototype.scoreStudentBySid = function (sid) {
+    let self = this
+    return this.students.find(x => x.studentId == sid).answers.map(a => {
+        return a.checkAnswer(self.questions.get(a.qid)) ? 1 : 0 
+    }).reduce((x,y) => x + y, 0)
+}
 
+Quiz.prototype.getAverageScore = function () {
+    let self = this
+    return this.students.map(s => this.scoreStudentBySid(s.studentId)).reduce((x,y) => x+y) / this.students.length
 }
 
 const student1 = new Student(10);
