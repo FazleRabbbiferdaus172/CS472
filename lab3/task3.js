@@ -9,9 +9,9 @@ let libraryBooks = [
 
  function addBook(title, author, id) { 
 	title = title[0].toUpperCase() + title.slice(1)
-	const exists = libraryBooks.some(x => x.title === title && x.author === author && x.ID == ID)
+	const exists = libraryBooks.some(x => x.title === title && x.author === author && x.ID == id)
 	if (!exists) {
-		let b = {title, author, id}
+		let b = {title, author, ID: id}
 		libraryBooks.push(b)
 		return b
 	}
