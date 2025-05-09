@@ -53,7 +53,7 @@ undefined
   a: 8,
   b: 9,
   c: 10
-  f: <function>,
+  f: function,
   x: 10,
 }]
 - TDZ: {} 
@@ -97,7 +97,7 @@ TDZ: {}
 - this: window
 - LE: [{
   x: undefined,
-  myFunction: <function>,
+  myFunction: function,
 }]
 - TDZ: {}
 
@@ -107,7 +107,7 @@ TDZ: {}
 - this: window
 - LE: [{ 
   x: 5,
-  myFunction: <function>,
+  myFunction: function,
 }], 
 - TDZ: {}
 
@@ -158,7 +158,7 @@ TDZ: {}
 - this: window
 - LE: [{
   foo: undefined,
-  bar: <function>,
+  bar: function,
 }]
 - TDZ: {}
 
@@ -167,7 +167,7 @@ TDZ: {}
 - this: window
 - LE: [{ 
   foo: 1,
-  bar: <function>,
+  bar: function,
 }], 
 - TDZ: {}
 
