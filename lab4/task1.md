@@ -11,39 +11,76 @@ undefined
 
 ### Lexical Environment 
 
-1. Global Execution Context (EC)
+1. Global EC creation:
+- Outer: null,
+- this: window
+- LE: [{
+  a: undefined,
+  b: undefined,
+  c: undefined,
+}]
+- TDZ: { x }
 
-- **Creation Phase**
-  - Outer: `null`
-  - LE: `{ a: undefined, b: undefined, c: undefined }`
-  - TDZ: `{ x }`
+2. Global EC execution:
+- Outer: null,
+- this: window
+- LE: [{
+  a: 5,
+  b: 10,
+  c: function,
+  x: undefined,
+}]
+- TDZ: {}
 
-- **Execution Phase**
-  - LE: `{ a: 5, b: 10, c: function, x: undefined }`
+3. FEC c creation:
+- Outer: Global
+- this: undefined
+- LE: [{
+  arguments: object,
+  a: 8,
+  b: 9,
+  c: 10
+  f: undefined,
+  x: undefined,
+}]
+- TDZ: {}
 
----
+4. FEC c execution:
+- Outer: Global
+- this: undefined
+- LE: [{
+  arguments: object,
+  a: 8,
+  b: 9,
+  c: 10
+  f: <function>,
+  x: 10,
+}]
+- TDZ: {} 
 
-#### 2. `c` Function Execution Context
+5. FEC f creation:
+- Outer: c
+- this: undefined
+- LE: [{
+  arguments: object,
+  a: 8,
+  b: 9,
+  c: 10,
+  x: undefined,
+}]
+TDZ: {}
 
-- **Creation Phase**
-  - Outer: Global
-  - LE: `{ arguments:obj a: 8, b: 9, c: 10, f: undefined }`
-  - TDZ: `{ x }`
-
-- **Execution Phase**
-  - LE: `{ a: 8, b: 9, c: 10, f: function, x: 10 }`
-
----
-
-#### 3. `f` Function Execution Context
-
-- **Creation Phase**
-  - Outer: `c`
-  - LE: `{ arguments: obj, a: 8, b: 9, c: 10 }`
-  - TDZ: `{ x }`
-
-- **Execution Phase**
-  - LE: `{ a: 8, b: 10, c: 10, x: 5 }`
+6. FEC f execution:
+- Outer: c
+- this: undefined
+- LE: [{
+  arguments: object,
+  a: 8,
+  b: 10,
+  c: 10,
+  x: 5,
+}]
+- TDZ: {} 
 
 ----
 
@@ -55,35 +92,56 @@ undefined
 
 ### Lexical Environment 
 
-1. Global Execution Context (EC)
+1. Global EC creation:
+- Outer: null,
+- this: window
+- LE: [{
+  x: undefined,
+  myFunction: <function>,
+}]
+- TDZ: {}
 
-- **Creation Phase**
-  - Outer: `null`
-  - LE: `{ x: undefined, myFunction: undefined }`
-  - TDZ: `{}`
 
-- **Execution Phase**
-  - LE: `{ x: 9, myFunction: function }`
+2. Global EC execution:
+- Outer: null, 
+- this: window
+- LE: [{ 
+  x: 5,
+  myFunction: <function>,
+}], 
+- TDZ: {}
 
----
-
-2. `myFunction` Execution Context (1st Call)
-
+3. FEC (myFunction first call) creation:
 - Outer: Global
-- LE: `{}`
+- this: undefined
+- LE: [{
+  arguments: object,
+}]
+- TDZ: {}
 
----
-
-3. Global Variable Update
-
-- `x = 5` (global variable updated)
-
----
-
-4. `myFunction` Execution Context (2nd Call)
-
+4. FEC (myFunction first call) execution:
 - Outer: Global
-- LE: `{}`
+- this: undefined
+- LE: [{
+  arguments: object,
+}]
+- TDZ: {} 
+
+5. FEC (myFunction second call) creation:
+- Outer: Global
+- this: undefined
+- LE: [{
+  arguments: object,
+}]
+- TDZ: {}
+
+6. FEC (myFunction second call) execution:
+- Outer: Global
+- this: undefined
+- LE: [{
+  arguments: object,
+}]
+- TDZ: {}
 
 ---
 
@@ -95,23 +153,38 @@ undefined
 
 ### Lexical Environment
 
-1. Global Execution Context (EC)
+1. Global EC creation:
+- Outer: null,
+- this: window
+- LE: [{
+  foo: undefined,
+  bar: <function>,
+}]
+- TDZ: {}
 
-- **Creation Phase**
-  - Outer: null
-  - Lexical Environment (LE): { foo: undefined, bar: function }
-  - Temporal Dead Zone (TDZ): {}
+2. Global EC execution:
+- Outer: null, 
+- this: window
+- LE: [{ 
+  foo: 1,
+  bar: <function>,
+}], 
+- TDZ: {}
 
-- **Execution Phase**
-  - LE: { foo: 1, bar: function }
+3. FEC bar creation:
+- Outer: Global
+- this: undefined
+- LE: [{
+  arguments: object,
+  foo: undefined,
+}]
+- TDZ: {}
 
----
-
-2. bar Function Execution Context
-- **Creation Phase**
-  - Outer: Global
-  - LE: { foo: undefined }
-  - TDZ: {}
-
-- **Execution Phase**
-  - LE: { foo: 10 }
+4. FEC bar execution:
+- Outer: Global
+- this: undefined
+- LE: [{
+  arguments: object,
+  foo: 10,
+}]
+- TDZ: {} 
