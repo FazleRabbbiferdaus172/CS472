@@ -1,10 +1,15 @@
+import { ItemList } from "./components/ItemList"
+import { BookProvider } from "./components/itemContext"
+import 'bulma/css/bulma.css'
 
 function App() {
 
   return (
-    <>
-      "hi"
-    </>
+    <BookProvider>
+      <div class="content">
+        <ItemList/>
+      </div>
+    </BookProvider>
   )
 }
 
