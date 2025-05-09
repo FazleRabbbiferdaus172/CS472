@@ -36,7 +36,7 @@ export function UpdateBookForm(props) {
                 <div className="column is-3 m-1"></div>
                 {props.columnList.map( c=> 
                     {
-                        return <input
+                        return <input key={c}
                         className="column is-2 m-1 has-background-dark has-text-light"
                         id={c}
                         type='text'

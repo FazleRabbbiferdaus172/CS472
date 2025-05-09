@@ -32,15 +32,5 @@ export default function ProductList() {
         ));
     }
 
-    return (
-        // <ul onClick={(event) => updateStock(event)}>
-        <ul>
-            <li className="list-header">
-                <span>Name | </span>
-                <span>Price | </span>
-                <span>InStock</span>
-            </li>
-            {product_list.map(i => <Product key={i.id} {...i} updateStock={updateStock}/>)}
-        </ul>
-    ) 
+    return {product_list.map(i => <Product key={i.id} {...i} updateStock={updateStock}/>)}
 }  

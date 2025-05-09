@@ -47,7 +47,7 @@ export const BookProvider = ({children}) => {
             setBooks([...books, newBook])
         }
         catch (err) {
-            console.log(err)
+            setError(err)
         }
 
     }
@@ -67,7 +67,7 @@ export const BookProvider = ({children}) => {
           const newBook = await response.json()
           setBooks(books.map((x) => (x.id === newBook.id ? newBook : x)))
         } catch (err) {
-            console.log(err)
+            setError(err)
         }
       }
     
@@ -82,7 +82,7 @@ export const BookProvider = ({children}) => {
           if (!response.ok) throw new Error('Failed to delete book')
           setBooks(books.filter((book) => book.id !== id))
         } catch (err) {
-          console.log(err)
+          setError(err)
         }
       }
 

@@ -3,7 +3,7 @@ import { CreateBookForm } from "./createBookForm"
 import { UpdateBookForm } from "./editBookForm"
 import { useState } from "react"
 
-export function ItemList(props) {
+export function ItemList() {
     const { books: items, loading, error } = useBookContext()
     // let items = props.items
     if (loading) return <><h3>Loading...</h3></>
@@ -29,7 +29,7 @@ function ItemTitle(props) {
         return (
             <div className="columns is-2">
                 <div className="column is-3 m-1"></div>
-                {props.columnList.map( c=> <ItemCell value={c} isTitle={true}/>)}
+                {props.columnList.map( c=> <ItemCell key={c} value={c} isTitle={true}/>)}
                 <div className="column is-2 m-1 has-background-info"></div>
             </div>
         )
@@ -43,7 +43,7 @@ function Item(props) {
         return (
             <div className="columns is-2" data-book-id={props[props.staticColumn]}>
                 <div className="column is-3 m-1"></div>
-                {props.columnList.map( c=> <ItemCell value={props[c]}/>)}
+                {props.columnList.map( c=> <ItemCell key={c} value={props[c]}/>)}
                 <button className="column is-1 m-1 has-background-warning has-text-centered" onClick={() => setMode("edit")}>Edit</button>
                 <button className="column is-1 m-1 has-background-danger has-text-centered" onClick={() => deleteBook(props[props.staticColumn])}>Delete</button>
             </div>
