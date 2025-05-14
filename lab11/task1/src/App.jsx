@@ -1,16 +1,9 @@
-import { ItemList } from "./components/ItemList"
-import { BookProvider } from "./components/itemContext"
 import 'bulma/css/bulma.css'
+import AppRoutes from './routes/routes'
 
 function App() {
-
-  return (
-    <BookProvider>
-      <div className="content">
-        <ItemList/>
-      </div>
-    </BookProvider>
-  )
+  return <AppRoutes/>
+  
 }
 
 export default App

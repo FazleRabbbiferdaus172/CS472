@@ -1,5 +1,6 @@
 import { useBookContext } from "./itemContext";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export function CreateBookForm(props) {
     const {addBook} = useBookContext()
@@ -7,8 +8,10 @@ export function CreateBookForm(props) {
         title: '',
         author: '',
       })
+
+    let navigate = useNavigate()
     
-      const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault(); // prevents full page reload
         e.stopPropagation();
         if (!book.title || !book.author) {
@@ -16,10 +19,7 @@ export function CreateBookForm(props) {
           return
         }
         addBook(book)
-        setBook({
-            title: '',
-            author: '',
-          })
+        navigate("/")
       }
     
     const handleChange = (event) => {
@@ -29,10 +29,11 @@ export function CreateBookForm(props) {
           [name]: value,
         }))
       }
+    let columnList = props?.columnList ?? ["title", "author"]
 
     return (<form className="columns is-2" onSubmit={handleSubmit}>
                 <div className="column is-3 m-1"></div>
-                {props.columnList.map( c=> 
+                {columnList.map( c=> 
                     {
                         return <input key={c}
                         className="column is-2 m-1 has-background-primary"

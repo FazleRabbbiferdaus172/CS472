@@ -1,7 +1,7 @@
 import { useBookContext } from "./itemContext"
-import { CreateBookForm } from "./createBookForm"
 import { UpdateBookForm } from "./editBookForm"
 import { useState } from "react"
+import { useNavigate } from "react-router";
 
 export function UiBlock() {
     const blockingStyle = {
@@ -28,7 +28,6 @@ export function ItemListHeader(props) {
     return (
         <>
             <ItemTitle columnList={props.columnList}/>
-            <CreateBookForm columnList={props.columnList} columnsCount={props.columnsCount}/>
         </>
     )
 }
@@ -51,17 +50,24 @@ export function ItemListLoading(props) {
 
 export function ItemListLoaded(props) {
     const { books: items} = useBookContext()
+    let navigate = useNavigate()
     return (
         <>
             <ItemListHeader columnList={props.columnList} columnsCount={props.columnsCount}/>
             <div style={{overflowY:"auto", overflowX: "hidden",maxHeight: '700px'}}>
                 {items.map(i => <Item key={i.id} staticColumn={props.staticColumn} columnList={props.columnList} columnsCount={props.columnsCount} {...i}/>)}
+                <div className="columns is-2">
+                <div className="column is-3 m-1 "></div>
+                <div className="column is-2 m-1 has-background-light has-text-centered"></div>
+                <div className="column is-2 m-1 has-background-light has-text-centered"></div>
+                <button className="column is-2 m-1 has-background-info has-text-centered" onClick={() => navigate("book/add")}>Add Book</button>
+            </div>
             </div>
         </>
     )
 }
 
-export function ItemList() {
+export function ItemList(props) {
     const { books: items, loading, error } = useBookContext()
     // let items = props.items
     //if (loading) return <><h3>Loading...</h3></>
@@ -80,7 +86,9 @@ export function ItemList() {
     }
 
     return (<div className="mt-6">
-            {loading === false ? <ItemListLoaded  staticColumn={staticColumn} columnList={columnList} columnsCount={columnsCount}/> : <ItemListLoading columnList={columnList} columnsCount={columnsCount}/>}
+            {loading === false ? 
+            <ItemListLoaded  staticColumn={staticColumn} columnList={columnList} columnsCount={columnsCount}/> 
+            : <ItemListLoading columnList={columnList} columnsCount={columnsCount}/>}
             </div>)
 }
 
@@ -99,12 +107,13 @@ function Item(props) {
     const { deleteBook } = useBookContext()
     let [mode, setMode] = useState("readonly")
     const toggleMode = () => {setMode("readonly")}
+    let navigate = useNavigate()
     if (mode === "readonly") {
         return (
             <div className="columns is-2" data-book-id={props[props.staticColumn]}>
                 <div className="column is-3 m-1"></div>
                 {props.columnList.map( c=> <ItemCell key={c} value={props[c]}/>)}
-                <button className="column is-1 m-1 has-background-warning has-text-centered" onClick={() => setMode("edit")}>Edit</button>
+                <button className="column is-1 m-1 has-background-warning has-text-centered" onClick={() => navigate("book/"+props[props.staticColumn]+"/edit")}>Edit</button>
                 <button className="column is-1 m-1 has-background-danger has-text-centered" onClick={() => deleteBook(props[props.staticColumn])}>Delete</button>
             </div>
         )

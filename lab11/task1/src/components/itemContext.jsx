@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const BookContext = createContext([])
 
@@ -60,7 +61,7 @@ export const BookProvider = ({children}) => {
     const updateBook = async (book) => {
         let hasChange = function (book) {
           let bookById = books.find(x => x.id === book.id)
-          if (bookById.name !== book.name || bookById.author !== book.author) return true
+          if (bookById.title !== book.title || bookById.author !== book.author) return true
           else return false
         }
         try {
