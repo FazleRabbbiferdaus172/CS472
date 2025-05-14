@@ -8,6 +8,12 @@ export const BookProvider = ({children}) => {
     const [error, setError] = useState(null);
     const url = "https://67d17ef590e0670699ba5929.mockapi.io/books"
 
+    const loadBooks = async () => {
+      if (loading === false) setLoading(true)
+      await fetchBooks(url)
+      setLoading(false)
+    }
+
     const fetchBooks = async (url) => {
         try {
               const response = await fetch(url)
@@ -18,13 +24,10 @@ export const BookProvider = ({children}) => {
             {
               console.error(err)
             }
-        finally {
-                setLoading(false)
-            }
     }
 
     useEffect(
-        () => {fetchBooks(url)}
+        () => {loadBooks()}
         , 
         []
     )
@@ -44,34 +47,47 @@ export const BookProvider = ({children}) => {
                 }
               )
             const newBook = await response.json()
-            setBooks([...books, newBook])
         }
         catch (err) {
             setError(err)
+        }
+        finally {
+          loadBooks()
         }
 
     }
 
     const updateBook = async (book) => {
+        let hasChange = function (book) {
+          let bookById = books.find(x => x.id === book.id)
+          if (bookById.name !== book.name || bookById.author !== book.author) return true
+          else return false
+        }
         try {
-          const response = await fetch(
-            `https://67d17ef590e0670699ba5929.mockapi.io/books/${book.id}`,
-            {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(book),
-            }
-          )
-          const newBook = await response.json()
-          setBooks(books.map((x) => (x.id === newBook.id ? newBook : x)))
-        } catch (err) {
+          let shouldUpdate = hasChange(book)
+          if (shouldUpdate) { 
+            const response = await fetch(
+              `https://67d17ef590e0670699ba5929.mockapi.io/books/${book.id}`,
+              {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(book),
+              }
+            )
+            const newBook = await response.json()
+          }
+        } 
+        catch (err) {
             setError(err)
+        }
+        finally {
+          loadBooks()
         }
       }
     
-      const deleteBook = async (id) => {
+    const deleteBook = async (id) => {
         try {
           const response = await fetch(
             `https://67d17ef590e0670699ba5929.mockapi.io/books/${id}`,
@@ -80,9 +96,11 @@ export const BookProvider = ({children}) => {
             }
           )
           if (!response.ok) throw new Error('Failed to delete book')
-          setBooks(books.filter((book) => book.id !== id))
         } catch (err) {
           setError(err)
+        }
+        finally {
+         loadBooks()
         }
       }
 

@@ -3,11 +3,69 @@ import { CreateBookForm } from "./createBookForm"
 import { UpdateBookForm } from "./editBookForm"
 import { useState } from "react"
 
+export function UiBlock() {
+    const blockingStyle = {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 2,
+        backgroundColor: "transparent" 
+    }
+    return (<div
+            style={blockingStyle}
+        />)
+}
+
+export function UiLoading() {
+    return (<div>
+            <h3>Loading...</h3>
+            </div>)
+}
+
+export function ItemListHeader(props) {
+    return (
+        <>
+            <ItemTitle columnList={props.columnList}/>
+            <CreateBookForm columnList={props.columnList} columnsCount={props.columnsCount}/>
+        </>
+    )
+}
+
+export function ItemListLoading(props) {
+    return (
+        <>
+            <ItemListHeader columnList={props.columnList} columnsCount={props.columnsCount}/>
+            <div className="columns is-2">
+                <div className="column is-3 m-1"></div>
+                <div className="column is-4 m-1">
+                   <UiLoading/> 
+                </div>
+                <div className="column is-2 m-1"></div>
+            </div>
+            <UiBlock/>
+        </>
+    )
+}
+
+export function ItemListLoaded(props) {
+    const { books: items} = useBookContext()
+    return (
+        <>
+            <ItemListHeader columnList={props.columnList} columnsCount={props.columnsCount}/>
+            <div style={{overflowY:"auto", overflowX: "hidden",maxHeight: '700px'}}>
+                {items.map(i => <Item key={i.id} staticColumn={props.staticColumn} columnList={props.columnList} columnsCount={props.columnsCount} {...i}/>)}
+            </div>
+        </>
+    )
+}
+
 export function ItemList() {
     const { books: items, loading, error } = useBookContext()
     // let items = props.items
-    if (loading) return <><h3>Loading...</h3></>
-    if (loading) return <><h3>{error}</h3></>
+    //if (loading) return <><h3>Loading...</h3></>
+    if (error) return <><h3>{error}</h3></>
     let staticColumn = "id"
     let columnsCount = 0
     let columnList = []
@@ -15,12 +73,14 @@ export function ItemList() {
         columnList = Object.getOwnPropertyNames(items[0]).filter(x => x != staticColumn)
         columnsCount = columnList.length
     }
+
+    if (columnsCount === 0) {
+        columnsCount = 2
+        columnList = ["title", "author"]
+    }
+
     return (<div className="mt-6">
-            <ItemTitle columnList={columnList}/>
-            <CreateBookForm columnList={columnList} columnsCount={columnsCount}/>
-            <div style={{overflowY:"auto", overflowX: "hidden",maxHeight: '700px'}}>
-                {items.map(i => <Item key={i.id} staticColumn={staticColumn} columnList={columnList} columnsCount={columnsCount} {...i}/>)}
-            </div>
+            {loading === false ? <ItemListLoaded  staticColumn={staticColumn} columnList={columnList} columnsCount={columnsCount}/> : <ItemListLoading columnList={columnList} columnsCount={columnsCount}/>}
             </div>)
 }
 
