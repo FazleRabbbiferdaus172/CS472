@@ -60,7 +60,7 @@ export const BookProvider = ({children}) => {
     const updateBook = async (book) => {
         let hasChange = function (book) {
           let bookById = books.find(x => x.id === book.id)
-          if (bookById.name !== book.name || bookById.author !== book.author) return true
+          if (bookById.title !== book.title || bookById.author !== book.author) return true
           else return false
         }
         try {
