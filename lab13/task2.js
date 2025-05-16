@@ -40,6 +40,8 @@ const pdfResponse = (res) => {generateResponse(res, 200, "ok", mimeTypeMap["/pdf
 const imageResponse = (res) => {generateResponse(res, 200, "ok", mimeTypeMap["/image"], "some.jpg")}
 const notFoundResponse = (res) => {generateResponse(res, 404, "not found", mimeTypeMap["default"], "not found")}
 const methodNotAllowed = (res) => {generateResponse(res, 405, "method not allowed", mimeTypeMap["default"], "method not allowed")}
+
+
 let urlMap = {}
 urlMap[["GET", "/"]] = homeResponse
 urlMap[["GET", "/home"]] = homeResponse
