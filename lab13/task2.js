@@ -59,9 +59,6 @@ function handleRequest(req) {
 const server = http.createServer()
 
 server.on('request', (req, res) => {
-//    console.log(req.method)
-//    res.writeHead(200, {'Content-Type': 'text/plain; charset=us-ascii'})
-//    res.end("hi\n")
         handleRequest(req)(res)        
 })
 
